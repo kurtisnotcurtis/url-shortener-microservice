@@ -29,10 +29,12 @@ app.get("/", function (req, res) { // Serve homepage (static view)
 app.get("/:url", function (req, res) { // Handle passed url param
   const regex = /(http:\/\/)*(https:\/\/)*(www\.)\w+(\.\w{2,3})/gm;
   var response = {};
-  console.log("GET request to /:url");
+  console.log("GET request to /:url with parameter:", req.params.url);
   if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
       response.url = req.params.url;
-      mongoDB.collection("urls").save();
+      mongoDB.collection("urls").save(req.body, function (err, result) {
+        if (err) return console.log(err);
+      });
   } else {
     res.status(400);
     response.error = "Invalid URL: " + req.params.url + " is not a valid URL.";
