@@ -1,14 +1,17 @@
 const express = require("express");
 const path = require("path");
+const bodyParser = require("body-parser");
 
-const mongodb = require('mongodb'); // Let's import the mongodb native drivers
-const MongoClient = mongodb.MongoClient; // We need to work with "MongoClient" interface in order to connect to a mongodb server
-const urlDB = process.env.MONGOLAB_URI; // Connection URL. This is where your mongodb server is running.
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
+const urlDB = process.env.MONGOLAB_URI; // DB Connection URL provided in env var
 
 const port = process.env.PORT || 3000;
 var app = express();
 
 app.set("view engine", "pug");
+
+app.use(bodyParser.urlencoded({extended: true}) );
 
 app.get("/", function (req, res) { // Serve homepage (static view)
   var locals = {
