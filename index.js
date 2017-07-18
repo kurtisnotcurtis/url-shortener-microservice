@@ -21,13 +21,15 @@ app.get("/", function (req, res) { // Serve homepage (static view)
   res.render(path.join(__dirname, "views", "index"), locals);
   if (req.query) {
       // Forward to app.get("/:url")
+    console.log(req.query.url);
+    res.redirect("/:" + req.query.url);
   }
 });
 
 app.get("/:url", function (req, res) { // Handle passed url param
   const regex = /(http:\/\/)*(https:\/\/)*(www\.)\w+(\.\w{2,3})/gm;
   var response = {};
-  
+  console.log("GET request to /:url");
   if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
       response.url = req.params.url;
       mongoDB.collection("urls").save();
