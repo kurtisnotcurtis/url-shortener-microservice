@@ -21,10 +21,10 @@ app.get("/", function (req, res) { // Serve homepage (static view)
   res.render(path.join(__dirname, "views", "index"), locals);
 });
 
-app.post("/", function (req, res) {
+app.post("/:url", function (req, res) {
   const regex = /(www\.)\w+(\.\w{2,3})/gm;
   var response = {};
-  console.log("GET request to /:url with parameter:", req.query.url);
+  console.log("POST request to /:url with parameter:", req.query.url);
   if (regex.test(req.query.url)) { // param is a valid URL (validation pass)
       response.url = req.query.url;
       mongoDB.collection("urls").save(req.query.url, function (err, result) {
@@ -34,7 +34,7 @@ app.post("/", function (req, res) {
     res.status(400);
     response.error = "Invalid URL: " + req.query.url + " is not a valid URL.";
   }
-  res.json(response);
+  res.json(req.query);
 });
 
 app.get( "/:url", function (req, res) {
