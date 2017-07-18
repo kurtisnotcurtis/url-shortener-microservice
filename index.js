@@ -8,6 +8,7 @@ const urlDB = process.env.MONGOLAB_URI; // DB Connection URL provided in env var
 
 const port = process.env.PORT || 3000;
 var app = express();
+var db;
 
 app.set("view engine", "pug");
 
@@ -36,18 +37,14 @@ app.get("/:url", function (req, res) { // Handle passed url param
   res.json(response);
 });
 
-app.listen(port);  
-
-/* Use connect method to connect to the Server
-  MongoClient.connect(urlDB, function (err, db) {
+// Use connect method to connect to the Server
+MongoClient.connect("mongodb://admin:shark17@ds163672.mlab.com:63672/urls", function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
     console.log('Connection established to', urlDB);
-
-    // do some work here with the database.
-
-    //Close connection
-    db.close();
-  }
-}); */
+    app.listen(port);  
+  //Close connection
+  db.close();
+}
+});
