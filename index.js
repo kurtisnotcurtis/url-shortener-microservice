@@ -12,6 +12,7 @@ app.get("/", function (req, res) { // Serve homepage (static view)
   };
   
   res.render(path.join(__dirname, "views", "index"), locals);
+  
   if (req.query) {
       // Forward to app.get("/:url")
   }
