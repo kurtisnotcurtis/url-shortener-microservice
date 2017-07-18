@@ -29,14 +29,15 @@ app.get("/:url", function (req, res) { // Handle passed url param
   if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
       response.url = req.params.url;
   } else {
-      response.err = "Invalid URL: " + req.params.url ;
+    res.status(400);
+    response.error = "Invalid URL: " + req.params.url + " is not a valid URL.";
   }
-  res.json();
+  res.json(response);
 });
 
 app.listen(port);  
 
-// Use connect method to connect to the Server
+/* Use connect method to connect to the Server
   MongoClient.connect(urlDB, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
@@ -48,4 +49,4 @@ app.listen(port);
     //Close connection
     db.close();
   }
-});
+}); */
