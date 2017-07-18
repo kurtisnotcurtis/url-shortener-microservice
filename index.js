@@ -14,9 +14,7 @@ app.get("/", function (req, res) { // Serve homepage (static view)
   var locals = {
     client_ip: req.ip
   };
-  
   res.render(path.join(__dirname, "views", "index"), locals);
-  
   if (req.query) {
       // Forward to app.get("/:url")
   }
