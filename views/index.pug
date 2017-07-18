@@ -7,7 +7,7 @@ html(lang="en")
   h2 Usage
   p Type or paste a URL in this box or at the end of this page's address (e.g., "https://url-shortener-microservice-kg.glitch.me/{URL}"). You will be sent back a shortened URL you can use to link to that site!
   div Your IP: #{client_ip} <-- Don't try any funny stuff!   
- form(action='/' method='GET')
+ form(action='/' method='POST')
   div.form-group
    label(for='url') URL:
    input(type=text name='url')
