@@ -23,7 +23,14 @@ app.get("/", function (req, res) { // Serve homepage (static view)
 });
 
 app.get("/:url", function (req, res) { // Handle passed url param
+  const regex = /(http:\/\/)*(https:\/\/)*(www\.)\w+(\.\w{2,3})/gm;
+  var response = {};
   
+  if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
+      response.url = req.params.url;
+  } else {
+      response.err = "Invalid URL: " + req.params.url ;
+  }
   res.json();
 });
 
