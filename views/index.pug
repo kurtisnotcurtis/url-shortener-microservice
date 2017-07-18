@@ -1,12 +1,14 @@
 doctype html
 html(lang="en")
-  head
-    title Homepage
-  body
-    p You have reached the homepage for my url shortener service!
-    p Usage: Type a URL in this box or at the end of this page's url. If 
-    p Your IP: #{client_ip}
-    form test
-    input(type=text)
-    button Submit
+ head
+   title Homepage
+ body
+   p You have reached the homepage for my url shortener service!
+   p Usage: Type a URL in this box or at the end of this page's url. If 
+   p Your IP: #{client_ip}
+   form(action='/:url' method='GET')
+    div.form-group
+     label(for='url') URL:
+     input(type=text)#name
+     button.btn.btn-primary(type='submit') Submit
     
