@@ -79,7 +79,7 @@ function validateURL (url) { // Validates user-inputted URL
 function generateURL (req) {
   var redirectObj = {
     src_url: req.params.url,
-    redir_url: getNewLinkID(saveObj)
+    redir_url: getNewLinkID(saveObj(redirectObj))
   };
 
   mongoDB.collection("urls").save(redirectObj, function (err, result) {
@@ -99,6 +99,10 @@ function getNewLinkID (callback) {
     console.log("Current highest link number is", hi, ", new link ID is", (hi + 1) );
     callback(hi);
   });
+}
+
+function saveObj () {
+  
 }
 
 // Use connect method to connect to the Server
