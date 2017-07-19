@@ -1,15 +1,13 @@
-Welcome to the Glitch BETA
-=========================
+URL Shortener Service
+=====================
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+This webapp provides basic API functionality to accept a URL (either as a URL parameter or query with addtional info) and generate a link to a shorter
 
-**Glitch** is the friendly commmunity where you'll build the app of your dreams. Glitch lets you instantly create, remix, edit, and host an app, bot or site, and you can invite collaborators or helpers to simultaneously edit code with you.
-
-Find out more [about Glitch](https://glitch.com/about).
+This project is part of FreeCodeCamp's Backend curriculum (non-beta, as of 7/19/2017). [Click here](https://www.freecodecamp.org/challenges/url-shortener-microservice) to find out more.
 
 
-Your Project
-------------
+Usage
+-----
 
 On the front-end,
 - edit `public/client.js`, `public/style.css` and `views/index.html`
@@ -21,7 +19,7 @@ On the back-end,
 - safely store app secrets in `.env` (nobody can see this but you and people you invite)
 
 
-Made by [Fog Creek](https://fogcreek.com/)
--------------------
+Made by [Kurt Galiatsatos](https://www.freecodecamp.org/kurtisnotcurtis)
+------------------------
 
-\ ゜o゜)ノ
+
