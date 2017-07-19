@@ -19,8 +19,8 @@ app.get("/", function (req, res) { // Serve homepage (static view)
   res.render(path.join(__dirname, "views", "index"), locals);
 });
 
-app.post("/:url", function (req, res) { // Handle URLs inputted via the form
-  console.log("POST request to /:url with parameter:", req.query.url);
+app.post("/", function (req, res) { // Handle URLs inputted via the form
+  console.log("POST request to '/' with parameter:", req.query.url);
   // First check if the URL is a valid URL
   if ( validateURL(req.query.url) ) {
     console.log("Generating shortened link...");
@@ -47,17 +47,17 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
       console.log("Query string:", query, "Datatype:", typeof query);
       mongoDB.collection("urls").findOne({
         redir_url: query
-      }, null, function (err, doc) {
-        console.log("err:", err);
+      }, function (err, doc) {
+        if (err) console.log(err);
         console.log("result:", doc);
-        /*if (doc) {
+        if (doc) {
           console.log("Redirecting to", doc.src_url, "...");
-          res.redirect(doc.src_url);
+          res.redirect("https://" + doc.src_url);
         } else {
           console.log("Redirection failed; database record with redirect_url:", req.params.url, "not found.");
           res.status(404).end();
         }
-        mongoDB.close(); */
+        mongoDB.close();
       });
     } else {
       // Invalid request
