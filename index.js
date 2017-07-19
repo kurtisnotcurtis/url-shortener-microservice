@@ -38,8 +38,6 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
   // First check if the URL is a valid URL
   if ( validateURL(req.params.url) ) {
     console.log("Generating shortened link...");
-    var id;
-    getNewLinkID( generateURL(req) );
     return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else {
     const regex = /\d{5}/;
@@ -78,33 +76,54 @@ function validateURL (url) { // Validates user-inputted URL
   }
 }
 
-function generateURL (req, id) {
-  var redirectObj = {
-    src_url: req.params.url,
-    redir_url: id
-  };
-
-  mongoDB.collection("urls").save(redirectObj, function (err, result) {
-        if (err) return console.log(err);
-      });
+function generateURL (req) {
+  var hi;
   
-  return redirectObj;
-}
-
-function getNewLinkID (callback) {
-  var hi = 0;
-  var doc = mongoDB.collection("urls").find().toArray(function (err, documents) {
+  mongoDB.collection("urls").find().toArray(function (err, documents) {
     if (err) console.log(err);
+    
     hi = documents.reduce(function (acc, curdoc) {
       return acc < curdoc.redir_url ? curdoc.redir_url : acc;
     }, 0);
-    console.log("Current highest link number is", hi, ", new link ID is", (hi + 1) );
-    callback(hi);
-  });
-}
+    
+    console.log("Current highest link number is", hi, ", new link ID is", ++hi
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                ;
+    
+    var redirectObj = {
+    src_url: req.params.url,
+    redir_url: ++hi
+    };
 
-function saveObj () {
+    mongoDB.collection("urls").save(redirectObj, function (err, result) {
+      if (err) return console.log(err);
+    });
   
+    return redirectObj;
+  });
 }
 
 // Use connect method to connect to the Server
