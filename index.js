@@ -15,9 +15,7 @@ app.set("view engine", "pug");
 app.use(bodyParser.urlencoded({extended: true}) );
 
 app.get("/", function (req, res) { // Serve homepage (static view)
-  var locals = {
-    client_ip: req.ip
-  };
+  var locals = { client_ip: req.ip };
   res.render(path.join(__dirname, "views", "index"), locals);
 });
 
@@ -28,7 +26,7 @@ app.post("/:url", function (req, res) { // Handle URLs inputted via the form
     console.log("Generating shortened link...");
     res.json( JSON.stringify( generateURL(req) ) ); // Provide object with source and redirect URLs as JSON
   } else {
-      res.status(400);
+    res.status(400);
     var response = {};
     response.error = "Invalid URL: " + req.query.url + " is not a valid URL.";
     res.json(response);
@@ -44,10 +42,11 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
   } else {
     const regex = /\d{5}/;
     if ( regex.test(req.params.url) ) {
-      // User is attempting to use shortened URL...
+      console.log("User is attempting to use shortened URL...");
       var doc = mongoDB.collection("urls").find({
         redir_url: req.params.url
       }).toArray[0];
+      mongoDB.close;
       if (doc) {
         console.log("Redirecting to", doc.src_url, "...");
         res.redirect(doc.src_url);
@@ -89,9 +88,7 @@ function generateURL (req) {
 }
 
 function getNewLinkID () {
-  mongoDB.collection("urls").find({
-    redir_url: { $gt: }
-  })
+  var doc = mongoDB.collection("urls").find().sort({ redir_url: -1}).limit(1);
 }
 
 // Use connect method to connect to the Server
