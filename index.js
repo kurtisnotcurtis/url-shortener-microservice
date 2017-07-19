@@ -37,13 +37,16 @@ app.post("/:url", function (req, res) { // Handle URLs inputted via the form
   res.json(response);
 });
 
-app.get( "/:url", function (req, res) { // Handles URLs sent as parameters
+app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for either link generation or redirection
   console.log("GET request to /:url with parameter:", req.params.url);
-  // First check if 
+  // First check if the URL is a valid URL
   if ( validateURL(req.params.url) ) {
-    return JSON.stringify( generateURL(req) );
+    console.log("URL is a valid one - generating shortened link...");
+    return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else {
     // Could be a user attempting to use shortened URL...
+    console.log("Redirecting to", req.params.url, "...");
+    res.redirect(req.params.url);
   }
 });
 
@@ -60,18 +63,16 @@ function validateURL (url) { // Validates user-inputted URL
 }
 
 function generateURL (req) {
-  var response = {
-    url: req.params.url
+  var redirectObj = {
+    src_url: req.params.url,
+    redir_url: null
   };
 
-  mongoDB.collection("urls").save(req.params, function (err, result) {
+  mongoDB.collection("urls").save(redirectObj, function (err, result) {
         if (err) return console.log(err);
       });
-  } else {
-    res.status(400);
-    response.error = "Invalid URL: " + req.params.url + " is not a valid URL.";
-  }
-  res.json(response);
+  
+  return redirectObj;
 }
 
 // Use connect method to connect to the Server
@@ -79,7 +80,7 @@ MongoClient.connect(urlDB, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
-    console.log('Connection established to', urlDB);
+    console.log('MongoDB Connection established!');
     mongoDB = db;
     app.listen(port);
     

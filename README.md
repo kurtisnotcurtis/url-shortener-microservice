@@ -13,13 +13,13 @@ Via URL parameter:
 1. Obtain the desired URL to forward to in the following format: `www.example.com`
 2. Append it to the following URL:
 `https://us.glitch.me/`
-3. Upon creation, the server will respond with your shortened link as the 'url' property of a new object (JSON).
+3. Upon creation, the server will respond with your shortened link as the 'redir-url' property of a new object (JSON).
 
 Via the site form:
 
 1. Navigate to `https://us.glitch.me/`
 2. Enter the desired URL into the textbox and click 'Submit'
-3. Upon creation, the server will respond with your shortened link as the 'url' property of a new object (JSON).
+3. Upon creation, the server will respond with your shortened link as the 'redir-url' property of a new object (JSON).
 
 -----
 
