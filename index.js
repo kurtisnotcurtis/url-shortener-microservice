@@ -63,7 +63,7 @@ function validateURL (url) { // Validates user-inputted URL
 function generateURL (req) {
   var redirectObj = {
     src_url: req.params.url,
-    redir_url: null
+    redir_url: 10000 /* getNewLinkID() */
   };
 
   mongoDB.collection("urls").save(redirectObj, function (err, result) {
@@ -74,7 +74,7 @@ function generateURL (req) {
 }
 
 function getNewLinkID () {
-  mongoDB.
+  mongoDB.collection("urls").find()
 }
 
 // Use connect method to connect to the Server
