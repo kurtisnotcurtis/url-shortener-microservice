@@ -79,7 +79,7 @@ function validateURL (url) { // Validates user-inputted URL
 function generateURL (req) {
   var redirectObj = {
     src_url: req.params.url,
-    redir_url: getNewLinkID()
+    redir_url: getNewLinkID(saveObj)
   };
 
   mongoDB.collection("urls").save(redirectObj, function (err, result) {
@@ -89,14 +89,15 @@ function generateURL (req) {
   return redirectObj;
 }
 
-function getNewLinkID () {
+function getNewLinkID (callback) {
+  var hi = 0;
   var doc = mongoDB.collection("urls").find().toArray(function (err, documents) {
     if (err) console.log(err);
-    console.log(documents);
-    var hi = documents.reduce(function (acc, curdoc) {
+    hi = documents.reduce(function (acc, curdoc) {
       return acc < curdoc.redir_url ? curdoc.redir_url : acc;
     }, 0);
-    console.log("Current highest link number is", hi, "ret");
+    console.log("Current highest link number is", hi, ", new link ID is", (hi + 1) );
+    callback(hi);
   });
 }
 
