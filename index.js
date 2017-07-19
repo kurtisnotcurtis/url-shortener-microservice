@@ -42,9 +42,16 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
     console.log("URL is a valid one - generating shortened link...");
     return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else {
-    // Could be a user attempting to use shortened URL...
-    console.log("Redirecting to", req.params.url, "...");
-    res.redirect(req.params.url);
+    const regex = /\d{5}/;
+    if ( regex.test(req.params.url) ) {
+      // User is attempting to use shortened URL...
+      var doc = mongoDB.collections("urls").find();
+      console.log("Redirecting to", doc.src_url, "...");
+      res.redirect(doc.src_url);
+    } else {
+      // Invalid request
+      res.status(400).end();
+    }
   }
 });
 
