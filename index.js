@@ -38,6 +38,8 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
   // First check if the URL is a valid URL
   if ( validateURL(req.params.url) ) {
     console.log("Generating shortened link...");
+    var id;
+    getNewLinkID( generateURL(req) );
     return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else {
     const regex = /\d{5}/;
@@ -76,10 +78,10 @@ function validateURL (url) { // Validates user-inputted URL
   }
 }
 
-function generateURL (req) {
+function generateURL (req, id) {
   var redirectObj = {
     src_url: req.params.url,
-    redir_url: getNewLinkID(saveObj(redirectObj))
+    redir_url: id
   };
 
   mongoDB.collection("urls").save(redirectObj, function (err, result) {
