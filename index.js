@@ -93,7 +93,11 @@ function getNewLinkID () {
   var doc = mongoDB.collection("urls").find().toArray(function (err, documents) {
     if (err) console.log(err);
     console.log(documents);
-  }).;
+    var hi = documents.reduce(function (acc, curdoc) {
+      return acc < curdoc.redir_url ? curdoc.redir_url : acc;
+    }, 0);
+    console.log("Current highest link number is", hi, "ret");
+  });
 }
 
 // Use connect method to connect to the Server
