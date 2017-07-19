@@ -90,8 +90,10 @@ function generateURL (req) {
 }
 
 function getNewLinkID () {
-  var doc = mongoDB.collection("urls").find().sort({ redir_url: -1}).limit(1);
-  console.log(doc);
+  var doc = mongoDB.collection("urls").find().toArray(function (err, documents) {
+    if (err) console.log(err);
+    console.log(documents);
+  }).;
 }
 
 // Use connect method to connect to the Server
