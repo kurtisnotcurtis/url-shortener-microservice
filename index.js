@@ -25,8 +25,8 @@ app.post("/:url", function (req, res) { // Handle URLs inputted via the form
   console.log("POST request to /:url with parameter:", req.query.url);
   // First check if the URL is a valid URL
   if ( validateURL(req.query.url) ) {
-    console.log("URL is a valid one - generating shortened link...");
-    return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
+    console.log("Generating shortened link...");
+    res.json( JSON.stringify( generateURL(req) ) ); // Provide object with source and redirect URLs as JSON
   } else {
       res.status(400);
     var response = {};
@@ -39,7 +39,7 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
   console.log("GET request to /:url with parameter:", req.params.url);
   // First check if the URL is a valid URL
   if ( validateURL(req.params.url) ) {
-    console.log("URL is a valid one - generating shortened link...");
+    console.log("Generating shortened link...");
     return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else {
     const regex = /\d{5}/;
@@ -89,7 +89,9 @@ function generateURL (req) {
 }
 
 function getNewLinkID () {
-  mongoDB.collection("urls").find()
+  mongoDB.collection("urls").find({
+    redir_url: { $gt: }
+  })
 }
 
 // Use connect method to connect to the Server
