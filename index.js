@@ -43,8 +43,10 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
     const regex = /\d{5}/;
     if ( regex.test(req.params.url) ) {
       console.log("User is attempting to use shortened URL:", req.params.url);
+      var query = parseInt(req.params.url, 10);
+      console.log("Query string:", query, "Datatype:", typeof query);
       mongoDB.collection("urls").findOne({
-        redir_url: { $eq: parseInt(req.params.url, 10)}
+        redir_url: query
       }, null, function (err, doc) {
         console.log("err:", err);
         console.log("result:", doc);
