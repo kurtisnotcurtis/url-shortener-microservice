@@ -27,14 +27,14 @@ app.post("/:url", function (req, res) {
   console.log("POST request to /:url with parameter:", req.query.url);
   if (regex.test(req.query.url)) { // param is a valid URL (validation pass)
       response.url = req.query.url;
-      mongoDB.collection("urls").save(req.query.url, function (err, result) {
+      mongoDB.collection("urls").save(response, function (err, result) {
         if (err) return console.log(err);
       });
   } else {
     res.status(400);
     response.error = "Invalid URL: " + req.query.url + " is not a valid URL.";
   }
-  res.json(req.query);
+  res.json(response);
 });
 
 app.get( "/:url", function (req, res) {
@@ -60,7 +60,8 @@ MongoClient.connect(urlDB, function (err, db) {
   } else {
     console.log('Connection established to', urlDB);
     mongoDB = db;
-    app.listen(port);  
+    app.listen(port);
+    
   //Close connection
   //db.close();
 }
