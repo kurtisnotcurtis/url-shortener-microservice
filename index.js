@@ -21,7 +21,7 @@ app.get("/", function (req, res) { // Serve homepage (static view)
   res.render(path.join(__dirname, "views", "index"), locals);
 });
 
-app.post("/:url", function (req, res) {
+app.post("/:url", function (req, res) { // Handle URLs inputted via the form
   const regex = /(www\.)\w+(\.\w{2,3})/gm;
   var response = {};
   console.log("POST request to /:url with parameter:", req.query.url);
@@ -37,8 +37,27 @@ app.post("/:url", function (req, res) {
   res.json(response);
 });
 
-app.get( "/:url", function (req, res) {
+app.get( "/:url", function (req, res) { // Handles URLs sent as parameters
+  validateURL(req, res);
+  generateURL(req, res);
+});
+
+function validateURL (req, res) {
   const regex = /(www\.)\w+(\.\w{2,3})/gm;
+  console.log("GET request to /:url with parameter:", req.params.url);
+  if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
+      response.url = req.params.url;
+      mongoDB.collection("urls").save(req.params, function (err, result) {
+        if (err) return console.log(err);
+      });
+  } else {
+    res.status(400);
+    response.error = "Invalid URL: " + req.params.url + " is not a valid URL.";
+  }
+  res.json(response);
+}
+
+function generateURL (req, res) {
   var response = {};
   console.log("GET request to /:url with parameter:", req.params.url);
   if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
@@ -51,7 +70,7 @@ app.get( "/:url", function (req, res) {
     response.error = "Invalid URL: " + req.params.url + " is not a valid URL.";
   }
   res.json(response);
-});
+}
 
 // Use connect method to connect to the Server
 MongoClient.connect(urlDB, function (err, db) {
