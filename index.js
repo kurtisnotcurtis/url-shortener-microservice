@@ -73,6 +73,10 @@ function generateURL (req) {
   return redirectObj;
 }
 
+function getNewLinkID () {
+  mongoDB.
+}
+
 // Use connect method to connect to the Server
 MongoClient.connect(urlDB, function (err, db) {
   if (err) {
@@ -81,8 +85,5 @@ MongoClient.connect(urlDB, function (err, db) {
     console.log('MongoDB Connection established!');
     mongoDB = db;
     app.listen(port);
-    
-  //Close connection
-  //db.close();
-}
+  }
 });
