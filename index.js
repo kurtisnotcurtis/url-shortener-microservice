@@ -94,7 +94,7 @@ function generateURL (req, res) {
     
     // Build our object to be saved to the DB
     var redirectObj = {
-    src_url: req.params.url,
+    src_url: req.params.url || req.body.url,
     redir_url: hi
     };
 
