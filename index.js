@@ -24,7 +24,7 @@ app.post("/:url", function (req, res) { // Handle URLs inputted via the form
   // First check if the URL is a valid URL
   if ( validateURL(req.query.url) ) {
     console.log("Generating shortened link...");
-    res.json( JSON.stringify( generateURL(req) ) ); // Provide object with source and redirect URLs as JSON
+    res.json( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else { // Provide error details as JSON
     res.status(400);
     var response = {};
@@ -38,17 +38,16 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
   // First check if the URL is a valid URL
   if ( validateURL(req.params.url) ) {
     console.log("Generating shortened link...");
-    return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
+    res.json( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else {
     const regex = /\d{5}/;
     if ( regex.test(req.params.url) ) {
-      console.log("User is attempting to use shortened URL...");
+      console.log("User is attempting to use shortened URL...", req.params.url);
       
-      var doc = mongoDB.collection("urls").findOne({
+      var doc = mongoDB.collection("urls").find({
         redir_url: req.params.url
-      });
-      mongoDB.close();
-      
+      }).toArray();
+      console.log("doc:", doc);
       if (doc) {
         console.log("Redirecting to", doc.src_url, "...");
         res.redirect(doc.src_url);
@@ -56,6 +55,7 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
         console.log("Redirection failed; database record with redirect_url:", req.params.url, "not found.");
         res.status(404).end();
       }
+      mongoDB.close();
     } else {
       // Invalid request
       res.status(400)
@@ -79,6 +79,7 @@ function validateURL (url) { // Validates user-inputted URL
 function generateURL (req) {
   var hi;
   
+  // Query the DB to find the highest value for redir_url, save to 'hi' var
   mongoDB.collection("urls").find().toArray(function (err, documents) {
     if (err) console.log(err);
     
@@ -86,38 +87,15 @@ function generateURL (req) {
       return acc < curdoc.redir_url ? curdoc.redir_url : acc;
     }, 0);
     
-    console.log("Current highest link number is", hi, ", new link ID is", ++hi
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                ;
+    console.log("Current highest link number is", hi, ", new link ID is", ++hi);
     
+    // Build our object to be saved to the DB
     var redirectObj = {
     src_url: req.params.url,
-    redir_url: ++hi
+    redir_url: hi
     };
 
+    // Save the object to the DB
     mongoDB.collection("urls").save(redirectObj, function (err, result) {
       if (err) return console.log(err);
     });
