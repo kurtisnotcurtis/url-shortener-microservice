@@ -38,31 +38,33 @@ app.post("/:url", function (req, res) { // Handle URLs inputted via the form
 });
 
 app.get( "/:url", function (req, res) { // Handles URLs sent as parameters
-  validateURL(req, res);
-  generateURL(req, res);
+  console.log("GET request to /:url with parameter:", req.params.url);
+  // First check if 
+  if ( validateURL(req.params.url) ) {
+    return JSON.stringify( generateURL(req) );
+  } else {
+    // Could be a user attempting to use shortened URL...
+  }
 });
 
-function validateURL (req, res) {
+function validateURL (url) { // Validates user-inputted URL
   const regex = /(www\.)\w+(\.\w{2,3})/gm;
-  console.log("GET request to /:url with parameter:", req.params.url);
-  if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
-      response.url = req.params.url;
-      mongoDB.collection("urls").save(req.params, function (err, result) {
-        if (err) return console.log(err);
-      });
+  console.log("Validating URL:", url);
+  if ( regex.test(url) ) {
+    console.log("URL is valid:", url);
+    return true;
   } else {
-    res.status(400);
-    response.error = "Invalid URL: " + req.params.url + " is not a valid URL.";
+    console.log("URL is invalid:", url);
+    return false;
   }
-  res.json(response);
 }
 
-function generateURL (req, res) {
-  var response = {};
-  console.log("GET request to /:url with parameter:", req.params.url);
-  if (regex.test(req.params.url)) { // param is a valid URL (validation pass)
-      response.url = req.params.url;
-      mongoDB.collection("urls").save(req.params, function (err, result) {
+function generateURL (req) {
+  var response = {
+    url: req.params.url
+  };
+
+  mongoDB.collection("urls").save(req.params, function (err, result) {
         if (err) return console.log(err);
       });
   } else {
