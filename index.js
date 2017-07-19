@@ -44,20 +44,23 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
     if ( regex.test(req.params.url) ) {
       console.log("User is attempting to use shortened URL...", req.params.url);
       
-      mongoDB.collection("urls").find({
-        redir_url: req.params.url
-      }).toArray(function (documents) {
-        console.log("cursor:", documents);
-        if (documents[0]) {
-          console.log("Redirecting to", documents[0].src_url, "...");
-          res.redirect(documents[0].src_url);
-        } else {
-          console.log("Redirection failed; database record with redirect_url:", req.params.url, "not found.");
-          res.status(404).end();
-        }
+      var doc = mongoDB.collection("urls").findOne({
+        redir_url: { $eq: req.params.url}
+      }, function (err, r) {
+        
       });
       
+      console.log("current doc:", doc);
+      if (doc) {
+        console.log("Redirecting to", doc.src_url, "...");
+        res.redirect(doc.src_url);
+      } else {
+        console.log("Redirection failed; database record with redirect_url:", req.params.url, "not found.");
+        res.status(404).end();
+      }
+      
       mongoDB.close();
+      
     } else {
       // Invalid request
       res.status(400)
