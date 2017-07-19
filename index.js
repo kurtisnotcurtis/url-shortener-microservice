@@ -20,15 +20,15 @@ app.get("/", function (req, res) { // Serve homepage (static view)
 });
 
 app.post("/", function (req, res) { // Handle URLs inputted via the form
-  console.log("POST request to '/' with parameter:", req.query.url);
+  console.log("POST request to '/' with parameter:", req.body.url);
   // First check if the URL is a valid URL
-  if ( validateURL(req.query.url) ) {
+  if ( validateURL(req.body.url) ) {
     console.log("Generating shortened link...");
     res.json( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else { // Provide error details as JSON
     res.status(400);
     var response = {};
-    response.error = "Invalid URL: " + req.query.url + " is not a valid URL.";
+    response.error = "Invalid URL: " + req.body.url + " is not a valid URL.";
     res.json(response);
   }
 });
@@ -79,9 +79,9 @@ function validateURL (url) { // Validates user-inputted URL
   }
 }
 
-function generateURL (req) {
+function generateURL (req, res) {
   var hi;
-  
+  var obj;
   // Query the DB to find the highest value for redir_url, save to 'hi' var
   mongoDB.collection("urls").find().toArray(function (err, documents) {
     if (err) console.log(err);
@@ -103,8 +103,9 @@ function generateURL (req) {
       if (err) return console.log(err);
     });
   
-    return redirectObj;
+    obj = redirectObj;
   });
+  return obj;
 }
 
 // Use connect method to connect to the Server
