@@ -24,7 +24,7 @@ app.post("/", function (req, res) { // Handle URLs inputted via the form
   // First check if the URL is a valid URL
   if ( validateURL(req.body.url) ) {
     console.log("Generating shortened link...");
-    res.json( generateURL(req) ); // Provide object with source and redirect URLs as JSON
+    generateURL(req, res); // Provide object with source and redirect URLs as JSON
   } else { // Provide error details as JSON
     res.status(400);
     var response = {};
@@ -38,7 +38,7 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
   // First check if the URL is a valid URL
   if ( validateURL(req.params.url) ) {
     console.log("Generating shortened link...");
-    res.json( generateURL(req) ); // Provide object with source and redirect URLs as JSON
+    generateURL(req, res); // Provide object with source and redirect URLs as JSON
   } else {
     const regex = /\d{5}/;
     if ( regex.test(req.params.url) ) {
@@ -81,7 +81,6 @@ function validateURL (url) { // Validates user-inputted URL
 
 function generateURL (req, res) {
   var hi;
-  var obj;
   // Query the DB to find the highest value for redir_url, save to 'hi' var
   mongoDB.collection("urls").find().toArray(function (err, documents) {
     if (err) console.log(err);
@@ -95,7 +94,8 @@ function generateURL (req, res) {
     // Build our object to be saved to the DB
     var redirectObj = {
     src_url: req.params.url || req.body.url,
-    redir_url: hi
+    redir_url: hi,
+    short_url: "https://us.glitch.me/" + hi
     };
 
     // Save the object to the DB
@@ -103,9 +103,8 @@ function generateURL (req, res) {
       if (err) return console.log(err);
     });
   
-    obj = redirectObj;
+    res.json(redirectObj);
   });
-  return obj;
 }
 
 // Use connect method to connect to the Server
