@@ -25,7 +25,7 @@ app.post("/:url", function (req, res) { // Handle URLs inputted via the form
   if ( validateURL(req.query.url) ) {
     console.log("Generating shortened link...");
     res.json( JSON.stringify( generateURL(req) ) ); // Provide object with source and redirect URLs as JSON
-  } else {
+  } else { // Provide error details as JSON
     res.status(400);
     var response = {};
     response.error = "Invalid URL: " + req.query.url + " is not a valid URL.";
@@ -43,15 +43,17 @@ app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for e
     const regex = /\d{5}/;
     if ( regex.test(req.params.url) ) {
       console.log("User is attempting to use shortened URL...");
-      var doc = mongoDB.collection("urls").find({
+      
+      var doc = mongoDB.collection("urls").findOne({
         redir_url: req.params.url
-      }).toArray[0];
-      mongoDB.close;
+      });
+      mongoDB.close();
+      
       if (doc) {
         console.log("Redirecting to", doc.src_url, "...");
         res.redirect(doc.src_url);
       } else {
-        console.log("Redirection failed; record with redirect_url:", req.params.url, "not found.");
+        console.log("Redirection failed; database record with redirect_url:", req.params.url, "not found.");
         res.status(404).end();
       }
     } else {
@@ -77,7 +79,7 @@ function validateURL (url) { // Validates user-inputted URL
 function generateURL (req) {
   var redirectObj = {
     src_url: req.params.url,
-    redir_url: 10000 /* getNewLinkID() */
+    redir_url: getNewLinkID()
   };
 
   mongoDB.collection("urls").save(redirectObj, function (err, result) {
@@ -89,6 +91,7 @@ function generateURL (req) {
 
 function getNewLinkID () {
   var doc = mongoDB.collection("urls").find().sort({ redir_url: -1}).limit(1);
+  console.log(doc);
 }
 
 // Use connect method to connect to the Server
