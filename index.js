@@ -22,19 +22,17 @@ app.get("/", function (req, res) { // Serve homepage (static view)
 });
 
 app.post("/:url", function (req, res) { // Handle URLs inputted via the form
-  const regex = /(www\.)\w+(\.\w{2,3})/gm;
-  var response = {};
   console.log("POST request to /:url with parameter:", req.query.url);
-  if (regex.test(req.query.url)) { // param is a valid URL (validation pass)
-      response.url = req.query.url;
-      mongoDB.collection("urls").save(response, function (err, result) {
-        if (err) return console.log(err);
-      });
+  // First check if the URL is a valid URL
+  if ( validateURL(req.query.url) ) {
+    console.log("URL is a valid one - generating shortened link...");
+    return JSON.stringify( generateURL(req) ); // Provide object with source and redirect URLs as JSON
   } else {
-    res.status(400);
+      res.status(400);
+    var response = {};
     response.error = "Invalid URL: " + req.query.url + " is not a valid URL.";
+    res.json(response);
   }
-  res.json(response);
 });
 
 app.get( "/:url", function (req, res) { // Handles URLs sent as parameters for either link generation or redirection
