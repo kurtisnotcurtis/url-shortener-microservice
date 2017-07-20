@@ -30,6 +30,11 @@ html(lang="en")
    h2 List of URL Redirection Links
    table
     tr
-     th 
-    for item in urls
-     li= JSON.stringify(item)
+     th Destination URL
+     th Redirection URL Suffix
+     th Full Shortened URL
+   for item in urls
+    tr
+     td= item.src_url
+     td= item.redir_url
+     td= item.short_url
