@@ -23,10 +23,15 @@ app.get("/", function (req, res) { // Serve homepage (static view)
 });
 
 function renderHome (req, res, results) {
-    var locals = {
-        client_ip: req.ip,
-        urls: results
-    };
+  var filterLog = /[\:{2}\w{4}\:]*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\,/;
+  var ip = filterLog.exec(req.headers['x-forwarded-for'])[0];
+  ip = ip.substr(0, ip.length - 1);
+  
+  var locals = {
+    client_ip: ip,
+    urls: results
+  };
+  
   res.render(path.join(__dirname, "views", "index"), locals);
 }
 

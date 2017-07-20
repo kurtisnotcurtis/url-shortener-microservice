@@ -15,7 +15,7 @@ h2 {
 }
 
 table {
-  
+  border: 1px dotted black;
 }
 
 td,th {
