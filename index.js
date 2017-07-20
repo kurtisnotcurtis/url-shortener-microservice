@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended: true}) );
 app.use(express.static(path.join(__dirname,"public")));
 
 app.get("/", function (req, res) { // Serve homepage (static view)
-  var cursor = mongoDB.collection("urls").find().toArray(function (err, results) {
+  var cursor = mongoDB.collection("urls").find({}).toArray(function (err, results) {
     var locals = {
         client_ip: req.ip,
         urls: cursor
