@@ -28,6 +28,8 @@ html(lang="en")
    button.btn.btn-primary(type='submit') Submit
   div
    h2 List of URL Redirection Links
-   ol
+   table
+    tr
+     th 
     for item in urls
      li= JSON.stringify(item)
