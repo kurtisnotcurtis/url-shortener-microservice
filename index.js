@@ -17,14 +17,13 @@ app.use(bodyParser.urlencoded({extended: true}) );
 app.use(express.static(path.join(__dirname,"public")));
 
 app.get("/", function (req, res) { // Serve homepage (static view)
-  var locals;
   var cursor = mongoDB.collection("urls").find().toArray(function (err, results) {
-      locals = {
+    var locals = {
         client_ip: req.ip,
         urls: cursor
-      };
-  })
-  res.render(path.join(__dirname, "views", "index"), locals);
+    };
+    res.render(path.join(__dirname, "views", "index"), locals);
+  });
 });
 
 app.post("/", function (req, res) { // Handle URLs inputted via the form

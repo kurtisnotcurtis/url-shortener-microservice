@@ -1,13 +1,15 @@
+body {
+  font-family: "Source Code Pro";
+}
+
 h2 {
   text-decoration: underline;
 }
 
 .logo {
   white-space: pre;
-  font-family: "Source Code Pro";
   color: #660066;
-}
-
-body {
-  font-family: "Source Code Pro";
+  white-space-collapsing: discard;
+  font-weight: bold;
+  font-size: 10px;
 }

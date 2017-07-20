@@ -5,18 +5,22 @@ html(lang="en")
    link(rel="stylesheet", href="/css/style.css", type="text/css")
    link(href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet")
  body                               
-  p.logo                                      _|  _|    _|                _|                                      <!--
-  -->p.logo    _|    _|    _|_|_|        _|_|_|  _|      _|_|_|_|    _|_|_|  _|_|_|        _|_|_|  _|_|      _|_|    
-  p.logo    _|    _|  _|_|          _|    _|  _|  _|    _|      _|        _|    _|      _|    _|    _|  _|_|_|_|  
-  p.logo    _|    _|      _|_|      _|    _|  _|  _|    _|      _|        _|    _|      _|    _|    _|  _|        
-  p.logo      _|_|_|  _|_|_|    _|    _|_|_|  _|  _|      _|_|    _|_|_|  _|    _|  _|  _|    _|    _|    _|_|_|  
-  p.logo                              _|                                                                      
-  p.logo                          _|_|                                                                        
+  div.logo                                      _|  _|    _|                _|                                      
+  div.logo    _|    _|    _|_|_|        _|_|_|  _|      _|_|_|_|    _|_|_|  _|_|_|        _|_|_|  _|_|      _|_|    
+  div.logo    _|    _|  _|_|          _|    _|  _|  _|    _|      _|        _|    _|      _|    _|    _|  _|_|_|_|  
+  div.logo    _|    _|      _|_|      _|    _|  _|  _|    _|      _|        _|    _|      _|    _|    _|  _|        
+  div.logo      _|_|_|  _|_|_|    _|    _|_|_|  _|  _|      _|_|    _|_|_|  _|    _|  _|  _|    _|    _|    _|_|_|  
+  div.logo                                  _|                                                                      
+  div.logo                              _|_|                                                                           
+  |
   h1 URL Shortening Microservice
   h2 Usage
-  p Type or paste a URL in this box or at the end of this page's address (e.g., "https://url-shortener-microservice-kg.glitch.me/{URL}"). You will be sent back a shortened URL you can use to link to that site!
-  p Note: URLs must be formatted like this: <i>www.example.com</i>
-  div Your IP: #{client_ip} <-- Don't try any funny stuff!   
+  p Type or paste a URL in this box or at the end of this page's address:
+  p &nbsp; https://url-shortener-microservice-kg.glitch.me/<em>{URL}</em>
+  p You will be sent back a shortened URL you can use to link to that site!
+  p Note: URLs must be formatted like this:
+  p &nbsp; <em>www.example.com</em>
+  div Your IP: #{client_ip} <-- Don't try any funny stuff!
  form(action='/' method='POST')
   div.form-group
    label(for='url') URL:
@@ -25,6 +29,6 @@ html(lang="en")
   div
    h2 List of URL Redirection Links
    ol
-    li test
-    li test2
+    -
+      var list = 
     
