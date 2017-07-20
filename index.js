@@ -18,13 +18,17 @@ app.use(express.static(path.join(__dirname,"public")));
 
 app.get("/", function (req, res) { // Serve homepage (static view)
   var cursor = mongoDB.collection("urls").find({}).toArray(function (err, results) {
-    var locals = {
-        client_ip: req.ip,
-        urls: cursor
-    };
-    res.render(path.join(__dirname, "views", "index"), locals);
+    renderHome(req, res, results);
   });
 });
+
+function renderHome (req, res, results) {
+    var locals = {
+        client_ip: req.ip,
+        urls: results
+    };
+  res.render(path.join(__dirname, "views", "index"), locals);
+}
 
 app.post("/", function (req, res) { // Handle URLs inputted via the form
   console.log("POST request to '/' with parameter:", req.body.url);
