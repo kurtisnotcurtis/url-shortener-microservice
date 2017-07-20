@@ -4,6 +4,10 @@ h2 {
 
 .logo {
   white-space: pre;
-  font-family: monospace;
+  font-family: "Source Code Pro";
   color: #660066;
+}
+
+body {
+  font-family: "Source Code Pro";
 }
