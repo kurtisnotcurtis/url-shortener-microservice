@@ -1,3 +1,9 @@
 h2 {
   text-decoration: underline;
 }
+
+.logo {
+  white-space: pre;
+  font-family: monospace;
+  color: #660066;
+}
