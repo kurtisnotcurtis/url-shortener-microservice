@@ -15,7 +15,13 @@ app.set("view engine", "pug");
 app.use(bodyParser.urlencoded({extended: true}) );
 
 app.get("/", function (req, res) { // Serve homepage (static view)
-  var locals = { client_ip: req.ip };
+  var locals;
+  var cursor = mongoDB.collection("urls").find().toArray(function (err, results) {
+      locals = {
+        client_ip: req.ip,
+        urls: cursor
+      };
+  })
   res.render(path.join(__dirname, "views", "index"), locals);
 });
 
